@@ -9,15 +9,19 @@ namespace IotDB_FunctionBlock_Creator
 {
     public partial class MainForm : Form
     {
+        private string CLI_PATH = Application.StartupPath + @"\sbin\cli.bat";
+        private string BAT_PATH = Application.StartupPath + @"\sbin\bat";
         private DataTable dt = new DataTable();
         private List<TimeSeries> timeSeries = new List<TimeSeries>();
-        private Process p = new Process();
-        private StreamWriter sw;
-        private int i = 0;
+        FunctionBlockGroup fbg = new FunctionBlockGroup("iotdb", "时序数据库");
+        private int plusi = 0;
+        private int funcindex = 0;
+        private bool menu = false;
 
         public MainForm()
         {
             InitializeComponent();
+            //初始化表格
             dataGridView.AutoGenerateColumns = false;
             dataGridView.AllowUserToAddRows = false;
             dt.Columns.Add("check", Type.GetType("System.Boolean"));
@@ -29,6 +33,7 @@ namespace IotDB_FunctionBlock_Creator
             dt.Columns.Add("co", Type.GetType("System.String"));
             dt.Columns.Add("ta", Type.GetType("System.String"));
             dt.Columns.Add("at", Type.GetType("System.String"));
+            contextList.Visible = false;
         }
 
         public void ExcuteBAT(string path)
@@ -36,6 +41,9 @@ namespace IotDB_FunctionBlock_Creator
             //调用bat脚本
             try
             {
+                dt.Clear();
+                Process p = new Process();
+                StreamWriter sw;
                 string cmd = "show timeseries";
                 p.StartInfo.FileName = path;
                 p.StartInfo.UseShellExecute = false;
@@ -55,7 +63,7 @@ namespace IotDB_FunctionBlock_Creator
                 sw.Close();
                 p.WaitForExit();
                 p.Close();
-                i = 0;
+                plusi = 0;
             }
             catch (Exception ex)
             {
@@ -70,14 +78,14 @@ namespace IotDB_FunctionBlock_Creator
             {
                 if (e.Data.StartsWith("+"))
                 {
-                    i++;
+                    plusi++;
                 }
-                if (i == 2 && !e.Data.StartsWith("+"))
+                DGVDataTableSet();
+                if (plusi == 2 && !e.Data.StartsWith("+"))
                 {
                     TimeSeries ts = new TimeSeries(e.Data);
                     timeSeries.Add(ts);
                     dt.Rows.Add(ts.ToDataRow(dt));
-                    DGVDataTableSet();
                 }
             }
         }
@@ -112,35 +120,131 @@ namespace IotDB_FunctionBlock_Creator
             return index;
         }
 
+        public bool CreateBAT(string ip, string port, string user, string password)
+        {
+            //从模板创建bat脚本
+            if (ip != "" && port != "" && user != "" && password != "")
+            {
+                StreamReader sr = new StreamReader(BAT_PATH);
+                string bat = sr.ReadToEnd();
+                bat = bat.Replace("@@@@@@", password).Replace("@@@@@", user).Replace("@@@@", port).Replace("@@@", ip);
+                if (File.Exists(CLI_PATH))
+                {
+                    File.Delete(CLI_PATH);
+                }
+                StreamWriter srw = new StreamWriter(CLI_PATH);
+                srw.Write(bat);
+                sr.Close();
+                srw.Close();
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("请先填写IotDB登录信息！");
+                return false;
+            }
+        }
+
         private void buttonBAT_Click(object sender, EventArgs e)
         {
             //调用bat脚本获取时间序列
-            ExcuteBAT(@"E:\Iotdb\apache-iotdb-0.12.3-server-bin\apache-iotdb-0.12.3-server-bin\sbin\start-cli-linux.bat");
-            dataGridView.Refresh();
-            dataGridView.ClearSelection();
-            dataGridView.CurrentCell = null;
+            try
+            {
+                bool ret = CreateBAT(textBoxip.Text.Trim(), textBoxport.Text.Trim(), textBoxuser.Text.Trim(), textBoxpw.Text.Trim());
+                if (ret)
+                {
+                    ExcuteBAT(CLI_PATH);
+                    dataGridView.Refresh();
+                    dataGridView.ClearSelection();
+                    dataGridView.CurrentCell = null;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void buttonXML_Click(object sender, EventArgs e)
         {
-            //把选中的时间序列保存为功能块xml
+            //保存为xml
+            string path = Application.StartupPath + @"\FunctionBlock.xml";
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = Application.StartupPath;
+            saveFileDialog.FileName = "FunctionBlock.xml";
+            saveFileDialog.Filter = "XML文件|*.xml";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                path = saveFileDialog.FileName;
+                fbg.SaveAsXml(path);
+                MessageBox.Show("生成xml文件成功！");
+            }
+        }
+
+        private void buttonAddFB_Click(object sender, EventArgs e)
+        {
+            //把选中的时间序列保存为功能块
             var index = GetDGVIndex();
             if (index.Count > 0)
             {
-                FunctionBlockGroup fbg = new FunctionBlockGroup("iotdb", "时序数据库");
                 FunctionBlock fb = new FunctionBlock("iotdb");
                 foreach (int i in index)
                 {
                     fb.AddVar(timeSeries[i].getVar());
                 }
                 fbg.AddFuncBlock(fb);
-                fbg.SaveAsXml(@"E:\Iotdb\a.xml");
-                MessageBox.Show("生成xml文件成功！");
+                ToolStripMenuItem toolStrip = new ToolStripMenuItem();
+                toolStrip.Text = fb.ToString();
+                toolStrip.Click += new EventHandler(toolStripMenuItem_Click);
+                contextList.Items.Add(toolStrip);
             }
             else
             {
                 MessageBox.Show("请先选择至少一个时间序列！");
             }
+        }
+
+        private void buttonList_Click(object sender, EventArgs e)
+        {
+            //显示已经添加的功能块信息
+            if (contextList.Visible == false)
+            {
+                contextList.Show(Location);
+                contextList.Close();
+                contextList.Visible = true;
+            }
+            if (!menu)
+            {
+                contextList.Show(buttonList, -(contextList.Size.Width - buttonList.Size.Width), -contextList.Size.Height);
+                menu = true;
+            }
+            else
+            {
+                contextList.Close();
+                menu = false;
+            }
+        }
+
+        private void toolStripMenuIteminfo_Click(object sender, EventArgs e)
+        {
+            //查看功能块详细信息
+            MessageBox.Show(fbg.GetInfo(funcindex));
+        }
+
+        private void toolStripMenuItemdelete_Click(object sender, EventArgs e)
+        {
+            //删除功能块
+            fbg.DeleteFuncBlock(funcindex);
+            contextList.Items.Remove(contextList.Items[funcindex]);
+            contextList.Close();
+            contextList.Show(buttonList, -(contextList.Size.Width - buttonList.Size.Width), -contextList.Size.Height);
+        }
+
+        private void toolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //点击功能块的行为
+            funcindex = contextList.Items.IndexOf((ToolStripItem)sender);
+            contextListMenu.Show(MousePosition);
         }
     }
 }

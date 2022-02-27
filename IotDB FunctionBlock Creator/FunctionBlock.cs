@@ -214,7 +214,7 @@ namespace IotDB_FunctionBlock_Creator
             codearea = ca;
         }
 
-        public void SetCCode(string define,string code)
+        public void SetCCode(string define, string code)
         {
             //获取ccode字符串
             string cc = "FBD";
@@ -301,7 +301,10 @@ namespace IotDB_FunctionBlock_Creator
             pic.InnerText = picture;
             funcblock.AppendChild(pic);
             XmlElement des = xd.CreateElement("Discription");
-            des.InnerText = description;
+            if (description != "")
+            {
+                des.InnerText = description;
+            }
             funcblock.AppendChild(des);
             XmlElement pw = xd.CreateElement("PinWidth");
             pw.InnerText = PinWidth.ToString();
@@ -310,6 +313,39 @@ namespace IotDB_FunctionBlock_Creator
             ct.InnerText = ControlTime.ToString();
             funcblock.AppendChild(ct);
             return funcblock;
+        }
+
+        public void ClearVars()
+        {
+            //清除变量列表
+            fbVars.Clear();
+            incount = 0;
+            outcount = 0;
+            midcount = 0;
+            codearea = "";
+            ccode = "";
+        }
+
+        public override string ToString()
+        {
+            //获取字符串
+            string str = "功能块：";
+            str += funcBlockName;
+            str += "\r\n        包含变量" + (incount + outcount + midcount) + "个。";
+            return str;
+        }
+
+        public string ToInfo()
+        {
+            //获取详细信息字符串
+            string str = "功能块：";
+            str += funcBlockName;
+            str += "\r\n        包含变量" + (incount + outcount + midcount) + "个:";
+            foreach(var v in fbVars)
+            {
+                str += "\r\n              " + v.name; 
+            }
+            return str;
         }
     }
 
@@ -338,6 +374,19 @@ namespace IotDB_FunctionBlock_Creator
             count++;
         }
 
+        public void DeleteFuncBlock(int index)
+        {
+            //删除功能块
+            funcBlocks.Remove(funcBlocks[index]);
+            count--;
+        }
+
+        public string GetInfo(int index)
+        {
+            //获取功能块信息
+            return funcBlocks[index].ToInfo();
+        }
+
         public int SaveAsXml(string path)
         {
             //导出xml文件
@@ -356,5 +405,6 @@ namespace IotDB_FunctionBlock_Creator
             xd.Save(path);
             return 1;
         }
+
     }
 }
