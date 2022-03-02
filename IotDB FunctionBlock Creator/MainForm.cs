@@ -11,12 +11,17 @@ namespace IotDB_FunctionBlock_Creator
     {
         private string CLI_PATH = Application.StartupPath + @"\sbin\cli.bat";
         private string BAT_PATH = Application.StartupPath + @"\sbin\bat";
+        private string DEFINE = "void *handle = dlopen(\"/home/CASS-ePLC/libiotdbclient.so\", RTLD_LAZY);Query query = (Query)dlsym(handle, \"_Z5queryPhS_PlS_\");        dlclose(handle);";
+        private string CODES = "if(FB->Start==0&&FB->Execute==1){        ";
+        private string CODEM = "query((Uint8*)\"device\",(Uint8*)\"measurement\",(long*)FB->timestamp,FB->value);        ";
+        private string CODEE = "FB->Done=1;}    FB->Start=FB->Execute;";
         private DataTable dt = new DataTable();
         private List<TimeSeries> timeSeries = new List<TimeSeries>();
-        FunctionBlockGroup fbg = new FunctionBlockGroup("iotdb", "时序数据库");
-        private int plusi = 0;
-        private int funcindex = 0;
-        private bool menu = false;
+        private FunctionBlockGroup fbg = new FunctionBlockGroup("iotdb", "时序数据库");
+        private int plusi = 0;  //用于读取数据库的一个计数
+        private int funcindex = 0;  //获取点击列表的序号
+        private bool menu = false;  //列表是否已打开
+        private System.Drawing.Size lastsize;
 
         public MainForm()
         {
@@ -34,6 +39,7 @@ namespace IotDB_FunctionBlock_Creator
             dt.Columns.Add("ta", Type.GetType("System.String"));
             dt.Columns.Add("at", Type.GetType("System.String"));
             contextList.Visible = false;
+            lastsize = Size;
         }
 
         public void ExcuteBAT(string path)
@@ -41,7 +47,10 @@ namespace IotDB_FunctionBlock_Creator
             //调用bat脚本
             try
             {
+                plusi = 0;
                 dt.Clear();
+                timeSeries.Clear();
+                dataGridView.DataSource = null;
                 Process p = new Process();
                 StreamWriter sw;
                 string cmd = "show timeseries";
@@ -63,7 +72,6 @@ namespace IotDB_FunctionBlock_Creator
                 sw.Close();
                 p.WaitForExit();
                 p.Close();
-                plusi = 0;
             }
             catch (Exception ex)
             {
@@ -145,6 +153,14 @@ namespace IotDB_FunctionBlock_Creator
             }
         }
 
+        public void FreshContextList()
+        {
+            //刷新列表显示
+            contextList.Close();
+            contextList.Show(buttonList, -(contextList.Size.Width - buttonList.Size.Width), -contextList.Size.Height);
+            menu = true;
+        }
+
         private void buttonBAT_Click(object sender, EventArgs e)
         {
             //调用bat脚本获取时间序列
@@ -154,12 +170,24 @@ namespace IotDB_FunctionBlock_Creator
                 if (ret)
                 {
                     ExcuteBAT(CLI_PATH);
-                    dataGridView.Refresh();
-                    dataGridView.ClearSelection();
-                    dataGridView.CurrentCell = null;
+                    if (dt.Rows.Count != 0)
+                    {
+                        dataGridView.Refresh();
+                        dataGridView.ClearSelection();
+                        dataGridView.CurrentCell = null;
+                        labeltext.Text = "已登录IotDB服务器" + textBoxip.Text.Trim() + ":" + textBoxport.Text.Trim() + "，共有" + dt.Rows.Count + "项时间序列。";
+                    }
+                    else if(plusi==3)
+                    {
+                        MessageBox.Show("数据库中没有已创建的时间序列！");
+                    }
+                    else if(plusi==0)
+                    {
+                        MessageBox.Show("IotDB服务器登陆失败！");
+                    }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -168,16 +196,24 @@ namespace IotDB_FunctionBlock_Creator
         private void buttonXML_Click(object sender, EventArgs e)
         {
             //保存为xml
-            string path = Application.StartupPath + @"\FunctionBlock.xml";
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.InitialDirectory = Application.StartupPath;
-            saveFileDialog.FileName = "FunctionBlock.xml";
-            saveFileDialog.Filter = "XML文件|*.xml";
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (fbg.count > 1)
             {
-                path = saveFileDialog.FileName;
-                fbg.SaveAsXml(path);
-                MessageBox.Show("生成xml文件成功！");
+                string path = Application.StartupPath + @"\FunctionBlock.xml";
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.InitialDirectory = Application.StartupPath;
+                saveFileDialog.FileName = "FunctionBlock.xml";
+                saveFileDialog.Filter = "XML文件|*.xml";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    path = saveFileDialog.FileName;
+                    fbg.SaveAsXml(path);
+                    MessageBox.Show("生成xml文件成功！");
+                    labeltext.Text = "已生成xml文件，保存在" + path;
+                }
+            }
+            else
+            {
+                MessageBox.Show("现在还未添加任何功能块！");
             }
         }
 
@@ -187,16 +223,39 @@ namespace IotDB_FunctionBlock_Creator
             var index = GetDGVIndex();
             if (index.Count > 0)
             {
-                FunctionBlock fb = new FunctionBlock("iotdb");
-                foreach (int i in index)
+                NameForm nf = new NameForm();
+                if (nf.ShowDialog() == DialogResult.OK)
                 {
-                    fb.AddVar(timeSeries[i].getVar());
+                    FunctionBlock fb = new FunctionBlock(nf.name);
+                    string code = CODES;
+                    fb.AddSpecialVars();
+                    if (!nf.eachtimestamp)
+                    {
+                        fb.AddTimestampVars();
+                    }
+                    foreach (int i in index) 
+                    {
+                        if (nf.eachtimestamp)
+                        {
+                            fb.AddVarT(timeSeries[i].getVar());
+                            code += CODEM.Replace("device", timeSeries[i].GetDevice()).Replace("measurement", timeSeries[i].GetMeasurement()).Replace("timestamp",
+                                timeSeries[i].timeseries + "T").Replace("value", timeSeries[i].timeseries.Replace(".", "_"));
+                        }
+                        else
+                        {
+                            code += CODEM.Replace("device", timeSeries[i].GetDevice()).Replace("measurement", timeSeries[i].GetMeasurement()).Replace("value", timeSeries[i].timeseries.Replace(".", "_"));
+                        }
+                        fb.AddVar(timeSeries[i].getVar());
+                    }
+                    code += CODEE;
+                    fb.SetCCode(DEFINE, code);
+                    fbg.AddFuncBlock(fb);
+                    ToolStripMenuItem toolStrip = new ToolStripMenuItem();
+                    toolStrip.Text = fb.ToString();
+                    toolStrip.Click += new EventHandler(toolStripMenuItem_Click);
+                    contextList.Items.Add(toolStrip);
+                    FreshContextList();
                 }
-                fbg.AddFuncBlock(fb);
-                ToolStripMenuItem toolStrip = new ToolStripMenuItem();
-                toolStrip.Text = fb.ToString();
-                toolStrip.Click += new EventHandler(toolStripMenuItem_Click);
-                contextList.Items.Add(toolStrip);
             }
             else
             {
@@ -228,7 +287,7 @@ namespace IotDB_FunctionBlock_Creator
         private void toolStripMenuIteminfo_Click(object sender, EventArgs e)
         {
             //查看功能块详细信息
-            MessageBox.Show(fbg.GetInfo(funcindex));
+            MessageBox.Show(fbg.GetInfo(funcindex), "功能块详细信息");
         }
 
         private void toolStripMenuItemdelete_Click(object sender, EventArgs e)
@@ -236,8 +295,7 @@ namespace IotDB_FunctionBlock_Creator
             //删除功能块
             fbg.DeleteFuncBlock(funcindex);
             contextList.Items.Remove(contextList.Items[funcindex]);
-            contextList.Close();
-            contextList.Show(buttonList, -(contextList.Size.Width - buttonList.Size.Width), -contextList.Size.Height);
+            FreshContextList();
         }
 
         private void toolStripMenuItem_Click(object sender, EventArgs e)
@@ -245,6 +303,84 @@ namespace IotDB_FunctionBlock_Creator
             //点击功能块的行为
             funcindex = contextList.Items.IndexOf((ToolStripItem)sender);
             contextListMenu.Show(MousePosition);
+        }
+
+        private void buttoncsv_Click(object sender, EventArgs e)
+        {
+            //将时间序列表格导出为csv文件
+            string path = Application.StartupPath + @"\TimeSeries.csv";
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = Application.StartupPath;
+            saveFileDialog.FileName = "TimeSeries.csv";
+            saveFileDialog.Filter = "CSV文件|*.csv";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                path = saveFileDialog.FileName;
+                FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs);
+                string data = "";
+                for (int i = 1; i < dt.Columns.Count; i++)
+                {
+                    data += dataGridView.Columns[i].HeaderText;
+                    if (i < dt.Columns.Count - 1)
+                    {
+                        data += ",";
+                    }
+                }
+                sw.WriteLine(data);
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    data = "";
+                    for (int j = 1; j < dt.Columns.Count; j++)
+                    {
+                        data += dt.Rows[i][j].ToString();
+                        if (j < dt.Columns.Count - 1)
+                        {
+                            data += ",";
+                        }
+                    }
+                    sw.WriteLine(data);
+                }
+                sw.Close();
+                MessageBox.Show("导出csv文件成功！");
+                labeltext.Text = "csv文件已导出到" + path;
+            }
+
+        }
+
+        private void buttonselectall_Click(object sender, EventArgs e)
+        {
+            //全选时间序列
+            foreach(DataGridViewRow row in dataGridView.Rows)
+            {
+                row.Cells[0].Value = true;
+            }
+        }
+
+        private void buttonclearselect_Click(object sender, EventArgs e)
+        {
+            //清除时间序列的选择
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                row.Cells[0].Value = false;
+            }
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            //调整控件位置
+            System.Drawing.Size delta = Size - lastsize;
+            lastsize = Size;
+            dataGridView.Size += delta;
+            paneldown.Location = new System.Drawing.Point(paneldown.Location.X, paneldown.Location.Y + delta.Height);
+            paneldown.Size = new System.Drawing.Size(paneldown.Size.Width + delta.Width, paneldown.Size.Height);
+            groupBoxlogin.Location = new System.Drawing.Point(groupBoxlogin.Location.X + delta.Width, groupBoxlogin.Location.Y);
+            buttonAddFB.Location = new System.Drawing.Point(buttonAddFB.Location.X + delta.Width, buttonAddFB.Location.Y);
+            buttonBAT.Location = new System.Drawing.Point(buttonBAT.Location.X + delta.Width, buttonBAT.Location.Y);
+            buttoncsv.Location = new System.Drawing.Point(buttoncsv.Location.X + delta.Width, buttoncsv.Location.Y);
+            buttonXML.Location = new System.Drawing.Point(buttonXML.Location.X + delta.Width, buttonXML.Location.Y);
+            buttonList.Location = new System.Drawing.Point(buttonList.Location.X + delta.Width, buttonList.Location.Y);
+            labeltext.Size = new System.Drawing.Size(labeltext.Size.Width + delta.Width, labeltext.Size.Height);
         }
     }
 }

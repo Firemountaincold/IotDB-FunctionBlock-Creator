@@ -25,6 +25,15 @@ namespace IotDB_FunctionBlock_Creator
         TIME
     }
 
+    internal enum SPECIALVAR
+    {
+        //特殊变量
+        EXECUTE=0,
+        DONE,
+        START,
+        TIMESTAMP
+    }
+
     internal class Vars
     {
         //变量类
@@ -44,6 +53,47 @@ namespace IotDB_FunctionBlock_Creator
             type = varType;
             initvalue = value;
             ispointer = varispointer;
+        }
+
+        public Vars(SPECIALVAR var)
+        {
+            //构造特殊变量
+            id = 0;
+            datatype = VARDATATYPE.BOOL;
+            ispointer = false;
+            if (var == SPECIALVAR.EXECUTE) 
+            {
+                name = "Execute";
+                type = VARTYPE.INPUT;
+                initvalue = "";
+            }
+            else if(var == SPECIALVAR.DONE)
+            {
+                name = "Done";
+                type = VARTYPE.OUTPUT;
+                initvalue = "";
+            }
+            else if (var == SPECIALVAR.START)
+            {
+                name = "Start";
+                type = VARTYPE.MIDDLE;
+                initvalue = "0";
+            }
+            else if(var==SPECIALVAR.TIMESTAMP)
+            {
+                name = "timestamp";
+                type = VARTYPE.OUTPUT;
+                initvalue = "";
+                datatype = VARDATATYPE.DINT;
+                ispointer = true;
+            }
+        }
+
+        public Vars ToTimeVar()
+        {
+            //转换为时间戳
+            Vars time = new Vars(name + "T", VARDATATYPE.DINT, VARTYPE.OUTPUT, "", true);
+            return time;
         }
 
         public XmlElement GetXmlElement(XmlDocument xd)
@@ -184,6 +234,33 @@ namespace IotDB_FunctionBlock_Creator
             }
             fbVars.Add(var);
             return 1;
+        }
+
+        public void AddVarT(Vars var)
+        {
+            //添加时间戳变量
+            Vars t = var.ToTimeVar();
+            t.id = outcount;
+            outcount++;
+            fbVars.Add(t);
+        }
+
+        public void AddSpecialVars()
+        {
+            //添加特殊变量
+            Vars var1 = new Vars(SPECIALVAR.EXECUTE);
+            AddVar(var1);
+            Vars var2 = new Vars(SPECIALVAR.DONE);
+            AddVar(var2);
+            Vars var3 = new Vars(SPECIALVAR.START);
+            AddVar(var3);
+        }
+
+        public void AddTimestampVars()
+        {
+            //添加时间戳变量
+            Vars v = new Vars(SPECIALVAR.TIMESTAMP);
+            AddVar(v);
         }
 
         public void AddCode(string codearea, string ccode)
@@ -340,10 +417,30 @@ namespace IotDB_FunctionBlock_Creator
             //获取详细信息字符串
             string str = "功能块：";
             str += funcBlockName;
-            str += "\r\n        包含变量" + (incount + outcount + midcount) + "个:";
-            foreach(var v in fbVars)
+            str += "\r\n    包含变量" + (incount + outcount + midcount) + "个:";
+            str += "\r\n        输入变量:";
+            foreach (var v in fbVars)
             {
-                str += "\r\n              " + v.name; 
+                if (v.type == VARTYPE.INPUT)
+                {
+                    str += "\r\n              " + v.name;
+                } 
+            }
+            str += "\r\n        输出变量:";
+            foreach (var v in fbVars)
+            {
+                if (v.type == VARTYPE.OUTPUT)
+                {
+                    str += "\r\n              " + v.name;
+                }
+            }
+            str += "\r\n        中间变量:";
+            foreach (var v in fbVars)
+            {
+                if (v.type == VARTYPE.MIDDLE)
+                {
+                    str += "\r\n              " + v.name;
+                }
             }
             return str;
         }
@@ -355,7 +452,7 @@ namespace IotDB_FunctionBlock_Creator
         private string name;
         private string chname;
         private List<FunctionBlock> funcBlocks;
-        private int count;
+        public int count;
 
         public FunctionBlockGroup(string name, string chname)
         {

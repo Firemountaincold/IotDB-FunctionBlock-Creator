@@ -5,7 +5,7 @@ namespace IotDB_FunctionBlock_Creator
     internal class TimeSeries
     {
         //时间序列属性
-        private string timeseries;
+        public string timeseries;
         private string alias;
         private string storageGroup;
         private string dataType;
@@ -16,6 +16,7 @@ namespace IotDB_FunctionBlock_Creator
 
         public TimeSeries(string line)
         {
+            //构造函数
             var strs = line.Substring(1).Split('|');
             timeseries = strs[0].Trim();
             alias = strs[1].Trim();
@@ -29,6 +30,7 @@ namespace IotDB_FunctionBlock_Creator
 
         public Vars getVar()
         {
+            //将时间序列转化为变量
             VARDATATYPE dt = VARDATATYPE.DINT;
             VARTYPE tp = VARTYPE.OUTPUT;
             switch (dataType)
@@ -52,17 +54,19 @@ namespace IotDB_FunctionBlock_Creator
                     dt = VARDATATYPE.USINT;
                     break;
             }
-            Vars ts = new Vars(timeseries, dt, tp, "", true);
+            Vars ts = new Vars(timeseries.Replace(".", "_"), dt, tp, "", true);
             return ts;
         }
 
         public override string ToString()
         {
+            //将时间序列转化为字符串
             return timeseries + " : " + alias + "||" + storageGroup + "||" + dataType + "||" + encoding + "||" + compression + "||" + tags + "||" + attributes;
         }
 
         public DataRow ToDataRow(DataTable table)
         {
+            //将时间序列转化为数据行
             DataRow dr = table.NewRow();
             dr[0] = false;
             dr[1] = timeseries;
@@ -74,6 +78,29 @@ namespace IotDB_FunctionBlock_Creator
             dr[7] = tags;
             dr[8] = attributes;
             return dr;
+        }
+
+        public string GetDevice()
+        {
+            //获取时间序列的设备路径
+            string[] ts = timeseries.Split('.');
+            string tstmp = "";
+            for(int i = 0; i< ts.Length - 1; i++)
+            {
+                tstmp += ts[i];
+                if (i < ts.Length - 2)
+                {
+                    tstmp += ".";
+                }
+            }
+            return tstmp;
+        }
+
+        public string GetMeasurement()
+        {
+            //获取时间序列的传感器名
+            string[] ts = timeseries.Split('.');
+            return ts[ts.Length - 1];
         }
     }
 }
