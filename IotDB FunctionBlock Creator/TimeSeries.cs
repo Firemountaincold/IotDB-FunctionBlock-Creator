@@ -28,11 +28,15 @@ namespace IotDB_FunctionBlock_Creator
             attributes = strs[7].Trim();
         }
 
-        public Vars getVar()
+        public Vars getVar(bool output=true)
         {
             //将时间序列转化为变量
             VARDATATYPE dt = VARDATATYPE.DINT;
             VARTYPE tp = VARTYPE.OUTPUT;
+            if (!output)
+            {
+                tp = VARTYPE.INPUT;
+            }
             switch (dataType)
             {
                 case "INT64":
@@ -61,7 +65,7 @@ namespace IotDB_FunctionBlock_Creator
         public override string ToString()
         {
             //将时间序列转化为字符串
-            return timeseries + " : " + alias + "||" + storageGroup + "||" + dataType + "||" + encoding + "||" + compression + "||" + tags + "||" + attributes;
+            return timeseries + " " + alias + " " + storageGroup + " " + dataType + " " + encoding + " " + compression + " " + tags + " " + attributes;
         }
 
         public DataRow ToDataRow(DataTable table)

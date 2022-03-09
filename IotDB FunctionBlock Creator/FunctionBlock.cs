@@ -31,7 +31,8 @@ namespace IotDB_FunctionBlock_Creator
         EXECUTE=0,
         DONE,
         START,
-        TIMESTAMP
+        TIMESTAMP,
+        TIMESTAMP_W
     }
 
     internal class Vars
@@ -87,12 +88,20 @@ namespace IotDB_FunctionBlock_Creator
                 datatype = VARDATATYPE.DINT;
                 ispointer = true;
             }
+            else if (var == SPECIALVAR.TIMESTAMP_W)
+            {
+                name = "timestamp";
+                type = VARTYPE.INPUT;
+                initvalue = "";
+                datatype = VARDATATYPE.DINT;
+                ispointer = true;
+            }
         }
 
         public Vars ToTimeVar()
         {
             //转换为时间戳
-            Vars time = new Vars(name + "T", VARDATATYPE.DINT, VARTYPE.OUTPUT, "", true);
+            Vars time = new Vars(name + "T", VARDATATYPE.DINT, type, "", true);
             return time;
         }
 
@@ -256,10 +265,14 @@ namespace IotDB_FunctionBlock_Creator
             AddVar(var3);
         }
 
-        public void AddTimestampVars()
+        public void AddTimestampVars(bool output)
         {
             //添加时间戳变量
             Vars v = new Vars(SPECIALVAR.TIMESTAMP);
+            if (!output)
+            {
+                v = new Vars(SPECIALVAR.TIMESTAMP_W);
+            }
             AddVar(v);
         }
 

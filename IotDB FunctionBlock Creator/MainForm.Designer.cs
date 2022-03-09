@@ -62,19 +62,35 @@ namespace IotDB_FunctionBlock_Creator
             this.ColumnTags = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.labeltext = new System.Windows.Forms.TextBox();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemTool = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiReadDatabase = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCSV = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiXML = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonAddWFB = new System.Windows.Forms.Button();
+            this.tsmiSelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiReadFB = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiWriteFB = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.groupBoxlogin.SuspendLayout();
             this.paneldown.SuspendLayout();
             this.contextListMenu.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonBAT
             // 
             this.buttonBAT.BackColor = System.Drawing.Color.Honeydew;
             this.buttonBAT.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonBAT.Location = new System.Drawing.Point(1147, 252);
+            this.buttonBAT.Location = new System.Drawing.Point(1146, 273);
             this.buttonBAT.Name = "buttonBAT";
-            this.buttonBAT.Size = new System.Drawing.Size(146, 40);
+            this.buttonBAT.Size = new System.Drawing.Size(146, 30);
             this.buttonBAT.TabIndex = 1;
             this.buttonBAT.Text = "读取数据库";
             this.buttonBAT.UseVisualStyleBackColor = false;
@@ -97,20 +113,20 @@ namespace IotDB_FunctionBlock_Creator
             this.ColumnCompression,
             this.ColumnTags,
             this.ColumnDescription});
-            this.dataGridView.Location = new System.Drawing.Point(13, 13);
+            this.dataGridView.Location = new System.Drawing.Point(13, 34);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersVisible = false;
             this.dataGridView.RowTemplate.Height = 23;
-            this.dataGridView.Size = new System.Drawing.Size(1128, 552);
+            this.dataGridView.Size = new System.Drawing.Size(1128, 531);
             this.dataGridView.TabIndex = 3;
             // 
             // buttonXML
             // 
             this.buttonXML.BackColor = System.Drawing.Color.Azure;
             this.buttonXML.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonXML.Location = new System.Drawing.Point(1147, 436);
+            this.buttonXML.Location = new System.Drawing.Point(1148, 479);
             this.buttonXML.Name = "buttonXML";
-            this.buttonXML.Size = new System.Drawing.Size(145, 40);
+            this.buttonXML.Size = new System.Drawing.Size(145, 30);
             this.buttonXML.TabIndex = 4;
             this.buttonXML.Text = "生成功能块xml";
             this.buttonXML.UseVisualStyleBackColor = false;
@@ -127,7 +143,7 @@ namespace IotDB_FunctionBlock_Creator
             this.groupBoxlogin.Controls.Add(this.label2);
             this.groupBoxlogin.Controls.Add(this.textBoxip);
             this.groupBoxlogin.Controls.Add(this.label1);
-            this.groupBoxlogin.Location = new System.Drawing.Point(1148, 13);
+            this.groupBoxlogin.Location = new System.Drawing.Point(1147, 34);
             this.groupBoxlogin.Name = "groupBoxlogin";
             this.groupBoxlogin.Size = new System.Drawing.Size(145, 233);
             this.groupBoxlogin.TabIndex = 5;
@@ -206,11 +222,11 @@ namespace IotDB_FunctionBlock_Creator
             // 
             this.buttonAddFB.BackColor = System.Drawing.Color.Lavender;
             this.buttonAddFB.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonAddFB.Location = new System.Drawing.Point(1148, 390);
+            this.buttonAddFB.Location = new System.Drawing.Point(1148, 407);
             this.buttonAddFB.Name = "buttonAddFB";
-            this.buttonAddFB.Size = new System.Drawing.Size(145, 40);
+            this.buttonAddFB.Size = new System.Drawing.Size(145, 30);
             this.buttonAddFB.TabIndex = 4;
-            this.buttonAddFB.Text = "添加功能块";
+            this.buttonAddFB.Text = "添加读取功能块";
             this.buttonAddFB.UseVisualStyleBackColor = false;
             this.buttonAddFB.Click += new System.EventHandler(this.buttonAddFB_Click);
             // 
@@ -224,7 +240,7 @@ namespace IotDB_FunctionBlock_Creator
             this.paneldown.Controls.Add(this.buttonList);
             this.paneldown.Location = new System.Drawing.Point(13, 565);
             this.paneldown.Name = "paneldown";
-            this.paneldown.Size = new System.Drawing.Size(1128, 50);
+            this.paneldown.Size = new System.Drawing.Size(1128, 38);
             this.paneldown.TabIndex = 6;
             // 
             // buttonclearselect
@@ -233,7 +249,7 @@ namespace IotDB_FunctionBlock_Creator
             this.buttonclearselect.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonclearselect.Location = new System.Drawing.Point(84, 3);
             this.buttonclearselect.Name = "buttonclearselect";
-            this.buttonclearselect.Size = new System.Drawing.Size(75, 43);
+            this.buttonclearselect.Size = new System.Drawing.Size(75, 30);
             this.buttonclearselect.TabIndex = 0;
             this.buttonclearselect.Text = "清除选择";
             this.buttonclearselect.UseVisualStyleBackColor = false;
@@ -245,7 +261,7 @@ namespace IotDB_FunctionBlock_Creator
             this.buttonselectall.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonselectall.Location = new System.Drawing.Point(3, 3);
             this.buttonselectall.Name = "buttonselectall";
-            this.buttonselectall.Size = new System.Drawing.Size(75, 43);
+            this.buttonselectall.Size = new System.Drawing.Size(75, 30);
             this.buttonselectall.TabIndex = 0;
             this.buttonselectall.Text = "全选";
             this.buttonselectall.UseVisualStyleBackColor = false;
@@ -257,7 +273,7 @@ namespace IotDB_FunctionBlock_Creator
             this.buttonList.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonList.Location = new System.Drawing.Point(1021, 3);
             this.buttonList.Name = "buttonList";
-            this.buttonList.Size = new System.Drawing.Size(102, 43);
+            this.buttonList.Size = new System.Drawing.Size(102, 30);
             this.buttonList.TabIndex = 0;
             this.buttonList.Text = "功能块列表";
             this.buttonList.UseVisualStyleBackColor = false;
@@ -296,9 +312,9 @@ namespace IotDB_FunctionBlock_Creator
             // 
             this.buttoncsv.BackColor = System.Drawing.Color.Azure;
             this.buttoncsv.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttoncsv.Location = new System.Drawing.Point(1147, 298);
+            this.buttoncsv.Location = new System.Drawing.Point(1146, 309);
             this.buttoncsv.Name = "buttoncsv";
-            this.buttoncsv.Size = new System.Drawing.Size(145, 40);
+            this.buttoncsv.Size = new System.Drawing.Size(145, 30);
             this.buttoncsv.TabIndex = 4;
             this.buttoncsv.Text = "导出时间序列到csv";
             this.buttoncsv.UseVisualStyleBackColor = false;
@@ -379,31 +395,164 @@ namespace IotDB_FunctionBlock_Creator
             // 
             this.labeltext.BackColor = System.Drawing.Color.SeaShell;
             this.labeltext.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.labeltext.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labeltext.Location = new System.Drawing.Point(186, 12);
+            this.labeltext.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labeltext.Location = new System.Drawing.Point(165, 4);
             this.labeltext.Multiline = true;
             this.labeltext.Name = "labeltext";
-            this.labeltext.Size = new System.Drawing.Size(807, 33);
+            this.labeltext.Size = new System.Drawing.Size(807, 28);
             this.labeltext.TabIndex = 1;
             this.labeltext.Text = "欢迎使用IotDB功能块创建工具！";
+            this.labeltext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.BackColor = System.Drawing.Color.Azure;
+            this.menuStrip.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemFile,
+            this.toolStripMenuItemEdit,
+            this.toolStripMenuItemTool,
+            this.toolStripMenuItemHelp});
+            this.menuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(1305, 25);
+            this.menuStrip.TabIndex = 7;
+            this.menuStrip.Text = "menuStrip1";
+            // 
+            // toolStripMenuItemFile
+            // 
+            this.toolStripMenuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiReadDatabase,
+            this.tsmiCSV,
+            this.tsmiXML});
+            this.toolStripMenuItemFile.Name = "toolStripMenuItemFile";
+            this.toolStripMenuItemFile.Size = new System.Drawing.Size(58, 21);
+            this.toolStripMenuItemFile.Text = "文件(&F)";
+            // 
+            // toolStripMenuItemEdit
+            // 
+            this.toolStripMenuItemEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiReadFB,
+            this.tsmiWriteFB,
+            this.tsmiSelectAll,
+            this.tsmiClear});
+            this.toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
+            this.toolStripMenuItemEdit.Size = new System.Drawing.Size(59, 21);
+            this.toolStripMenuItemEdit.Text = "编辑(&E)";
+            // 
+            // toolStripMenuItemTool
+            // 
+            this.toolStripMenuItemTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiSearch});
+            this.toolStripMenuItemTool.Name = "toolStripMenuItemTool";
+            this.toolStripMenuItemTool.Size = new System.Drawing.Size(59, 21);
+            this.toolStripMenuItemTool.Text = "工具(&T)";
+            // 
+            // toolStripMenuItemHelp
+            // 
+            this.toolStripMenuItemHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAbout});
+            this.toolStripMenuItemHelp.Name = "toolStripMenuItemHelp";
+            this.toolStripMenuItemHelp.Size = new System.Drawing.Size(61, 21);
+            this.toolStripMenuItemHelp.Text = "帮助(&H)";
+            // 
+            // tsmiReadDatabase
+            // 
+            this.tsmiReadDatabase.Name = "tsmiReadDatabase";
+            this.tsmiReadDatabase.Size = new System.Drawing.Size(189, 22);
+            this.tsmiReadDatabase.Text = "读取 IotDB数据库(&R)";
+            this.tsmiReadDatabase.Click += new System.EventHandler(this.buttonBAT_Click);
+            // 
+            // tsmiCSV
+            // 
+            this.tsmiCSV.Name = "tsmiCSV";
+            this.tsmiCSV.Size = new System.Drawing.Size(189, 22);
+            this.tsmiCSV.Text = "导出 csv文件(&C)";
+            this.tsmiCSV.Click += new System.EventHandler(this.buttoncsv_Click);
+            // 
+            // tsmiXML
+            // 
+            this.tsmiXML.Name = "tsmiXML";
+            this.tsmiXML.Size = new System.Drawing.Size(189, 22);
+            this.tsmiXML.Text = "生成 xml文件(&X)";
+            this.tsmiXML.Click += new System.EventHandler(this.buttonXML_Click);
+            // 
+            // tsmiAbout
+            // 
+            this.tsmiAbout.Name = "tsmiAbout";
+            this.tsmiAbout.Size = new System.Drawing.Size(180, 22);
+            this.tsmiAbout.Text = "关于(&A)...";
+            this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
+            // 
+            // tsmiSearch
+            // 
+            this.tsmiSearch.Name = "tsmiSearch";
+            this.tsmiSearch.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSearch.Text = "搜索 时间序列(&C)";
+            this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
+            // 
+            // buttonAddWFB
+            // 
+            this.buttonAddWFB.BackColor = System.Drawing.Color.GhostWhite;
+            this.buttonAddWFB.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonAddWFB.Location = new System.Drawing.Point(1148, 443);
+            this.buttonAddWFB.Name = "buttonAddWFB";
+            this.buttonAddWFB.Size = new System.Drawing.Size(145, 30);
+            this.buttonAddWFB.TabIndex = 4;
+            this.buttonAddWFB.Text = "添加写入功能块";
+            this.buttonAddWFB.UseVisualStyleBackColor = false;
+            this.buttonAddWFB.Click += new System.EventHandler(this.buttonAddWFB_Click);
+            // 
+            // tsmiSelectAll
+            // 
+            this.tsmiSelectAll.Name = "tsmiSelectAll";
+            this.tsmiSelectAll.Size = new System.Drawing.Size(184, 22);
+            this.tsmiSelectAll.Text = "全选(&S)";
+            this.tsmiSelectAll.Click += new System.EventHandler(this.buttonselectall_Click);
+            // 
+            // tsmiClear
+            // 
+            this.tsmiClear.Name = "tsmiClear";
+            this.tsmiClear.Size = new System.Drawing.Size(184, 22);
+            this.tsmiClear.Text = "清除 选择(&C)";
+            this.tsmiClear.Click += new System.EventHandler(this.buttonclearselect_Click);
+            // 
+            // tsmiReadFB
+            // 
+            this.tsmiReadFB.Name = "tsmiReadFB";
+            this.tsmiReadFB.Size = new System.Drawing.Size(184, 22);
+            this.tsmiReadFB.Text = "创建 读取功能块(&R)";
+            this.tsmiReadFB.Click += new System.EventHandler(this.buttonAddFB_Click);
+            // 
+            // tsmiWriteFB
+            // 
+            this.tsmiWriteFB.Name = "tsmiWriteFB";
+            this.tsmiWriteFB.Size = new System.Drawing.Size(184, 22);
+            this.tsmiWriteFB.Text = "创建 写入功能块(&W)";
+            this.tsmiWriteFB.Click += new System.EventHandler(this.buttonAddWFB_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(1305, 624);
+            this.ClientSize = new System.Drawing.Size(1305, 614);
+            this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.paneldown);
             this.Controls.Add(this.groupBoxlogin);
+            this.Controls.Add(this.buttonAddWFB);
             this.Controls.Add(this.buttonAddFB);
             this.Controls.Add(this.buttoncsv);
             this.Controls.Add(this.buttonXML);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.buttonBAT);
+            this.MainMenuStrip = this.menuStrip;
             this.MinimumSize = new System.Drawing.Size(1280, 600);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IotDB功能块创建工具";
+            this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.groupBoxlogin.ResumeLayout(false);
@@ -411,7 +560,10 @@ namespace IotDB_FunctionBlock_Creator
             this.paneldown.ResumeLayout(false);
             this.paneldown.PerformLayout();
             this.contextListMenu.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -448,6 +600,21 @@ namespace IotDB_FunctionBlock_Creator
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTags;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDescription;
         private System.Windows.Forms.TextBox labeltext;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemFile;
+        private System.Windows.Forms.ToolStripMenuItem tsmiReadDatabase;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCSV;
+        private System.Windows.Forms.ToolStripMenuItem tsmiXML;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEdit;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemTool;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSearch;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemHelp;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAbout;
+        private System.Windows.Forms.Button buttonAddWFB;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSelectAll;
+        private System.Windows.Forms.ToolStripMenuItem tsmiClear;
+        private System.Windows.Forms.ToolStripMenuItem tsmiReadFB;
+        private System.Windows.Forms.ToolStripMenuItem tsmiWriteFB;
     }
 }
 
