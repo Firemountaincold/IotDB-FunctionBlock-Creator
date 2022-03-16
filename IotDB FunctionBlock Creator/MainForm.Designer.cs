@@ -32,6 +32,15 @@ namespace IotDB_FunctionBlock_Creator
             this.components = new System.ComponentModel.Container();
             this.buttonBAT = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColumnTimeSeries = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnAlias = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnStorage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnDataType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnEncoding = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnCompression = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnTags = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonXML = new System.Windows.Forms.Button();
             this.groupBoxlogin = new System.Windows.Forms.GroupBox();
             this.textBoxpw = new System.Windows.Forms.TextBox();
@@ -44,6 +53,7 @@ namespace IotDB_FunctionBlock_Creator
             this.label1 = new System.Windows.Forms.Label();
             this.buttonAddFB = new System.Windows.Forms.Button();
             this.paneldown = new System.Windows.Forms.Panel();
+            this.labeltext = new System.Windows.Forms.TextBox();
             this.buttonclearselect = new System.Windows.Forms.Button();
             this.buttonselectall = new System.Windows.Forms.Button();
             this.buttonList = new System.Windows.Forms.Button();
@@ -52,31 +62,23 @@ namespace IotDB_FunctionBlock_Creator
             this.toolStripMenuIteminfo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemdelete = new System.Windows.Forms.ToolStripMenuItem();
             this.buttoncsv = new System.Windows.Forms.Button();
-            this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnTimeSeries = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnAlias = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnStorage = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnDataType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnEncoding = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnCompression = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnTags = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.labeltext = new System.Windows.Forms.TextBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemTool = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiReadDatabase = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCSV = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiXML = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonAddWFB = new System.Windows.Forms.Button();
-            this.tsmiSelectAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiReadFB = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiWriteFB = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemTool = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonAddWFB = new System.Windows.Forms.Button();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.groupBoxlogin.SuspendLayout();
             this.paneldown.SuspendLayout();
@@ -119,6 +121,77 @@ namespace IotDB_FunctionBlock_Creator
             this.dataGridView.RowTemplate.Height = 23;
             this.dataGridView.Size = new System.Drawing.Size(1128, 531);
             this.dataGridView.TabIndex = 3;
+            // 
+            // ColumnCheck
+            // 
+            this.ColumnCheck.FillWeight = 3F;
+            this.ColumnCheck.HeaderText = "选择";
+            this.ColumnCheck.Name = "ColumnCheck";
+            this.ColumnCheck.Width = 50;
+            // 
+            // ColumnTimeSeries
+            // 
+            this.ColumnTimeSeries.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnTimeSeries.FillWeight = 10F;
+            this.ColumnTimeSeries.HeaderText = "时间序列";
+            this.ColumnTimeSeries.Name = "ColumnTimeSeries";
+            this.ColumnTimeSeries.ReadOnly = true;
+            // 
+            // ColumnAlias
+            // 
+            this.ColumnAlias.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnAlias.FillWeight = 6.335751F;
+            this.ColumnAlias.HeaderText = "别名";
+            this.ColumnAlias.Name = "ColumnAlias";
+            this.ColumnAlias.ReadOnly = true;
+            // 
+            // ColumnStorage
+            // 
+            this.ColumnStorage.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnStorage.FillWeight = 6.335751F;
+            this.ColumnStorage.HeaderText = "仓库";
+            this.ColumnStorage.Name = "ColumnStorage";
+            this.ColumnStorage.ReadOnly = true;
+            // 
+            // ColumnDataType
+            // 
+            this.ColumnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnDataType.FillWeight = 6.335751F;
+            this.ColumnDataType.HeaderText = "数据类型";
+            this.ColumnDataType.Name = "ColumnDataType";
+            this.ColumnDataType.ReadOnly = true;
+            // 
+            // ColumnEncoding
+            // 
+            this.ColumnEncoding.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnEncoding.FillWeight = 6.335751F;
+            this.ColumnEncoding.HeaderText = "编码方式";
+            this.ColumnEncoding.Name = "ColumnEncoding";
+            this.ColumnEncoding.ReadOnly = true;
+            // 
+            // ColumnCompression
+            // 
+            this.ColumnCompression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnCompression.FillWeight = 6.335751F;
+            this.ColumnCompression.HeaderText = "压缩方式";
+            this.ColumnCompression.Name = "ColumnCompression";
+            this.ColumnCompression.ReadOnly = true;
+            // 
+            // ColumnTags
+            // 
+            this.ColumnTags.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnTags.FillWeight = 6.335751F;
+            this.ColumnTags.HeaderText = "标签";
+            this.ColumnTags.Name = "ColumnTags";
+            this.ColumnTags.ReadOnly = true;
+            // 
+            // ColumnDescription
+            // 
+            this.ColumnDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnDescription.FillWeight = 6.335751F;
+            this.ColumnDescription.HeaderText = "描述";
+            this.ColumnDescription.Name = "ColumnDescription";
+            this.ColumnDescription.ReadOnly = true;
             // 
             // buttonXML
             // 
@@ -243,6 +316,19 @@ namespace IotDB_FunctionBlock_Creator
             this.paneldown.Size = new System.Drawing.Size(1128, 38);
             this.paneldown.TabIndex = 6;
             // 
+            // labeltext
+            // 
+            this.labeltext.BackColor = System.Drawing.Color.SeaShell;
+            this.labeltext.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.labeltext.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labeltext.Location = new System.Drawing.Point(165, 4);
+            this.labeltext.Multiline = true;
+            this.labeltext.Name = "labeltext";
+            this.labeltext.Size = new System.Drawing.Size(807, 28);
+            this.labeltext.TabIndex = 1;
+            this.labeltext.Text = "欢迎使用IotDB功能块创建工具！";
+            this.labeltext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // buttonclearselect
             // 
             this.buttonclearselect.BackColor = System.Drawing.Color.Beige;
@@ -320,90 +406,6 @@ namespace IotDB_FunctionBlock_Creator
             this.buttoncsv.UseVisualStyleBackColor = false;
             this.buttoncsv.Click += new System.EventHandler(this.buttoncsv_Click);
             // 
-            // ColumnCheck
-            // 
-            this.ColumnCheck.FillWeight = 3F;
-            this.ColumnCheck.HeaderText = "选择";
-            this.ColumnCheck.Name = "ColumnCheck";
-            this.ColumnCheck.Width = 50;
-            // 
-            // ColumnTimeSeries
-            // 
-            this.ColumnTimeSeries.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnTimeSeries.FillWeight = 10F;
-            this.ColumnTimeSeries.HeaderText = "时间序列";
-            this.ColumnTimeSeries.Name = "ColumnTimeSeries";
-            this.ColumnTimeSeries.ReadOnly = true;
-            // 
-            // ColumnAlias
-            // 
-            this.ColumnAlias.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnAlias.FillWeight = 6.335751F;
-            this.ColumnAlias.HeaderText = "别名";
-            this.ColumnAlias.Name = "ColumnAlias";
-            this.ColumnAlias.ReadOnly = true;
-            // 
-            // ColumnStorage
-            // 
-            this.ColumnStorage.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnStorage.FillWeight = 6.335751F;
-            this.ColumnStorage.HeaderText = "仓库";
-            this.ColumnStorage.Name = "ColumnStorage";
-            this.ColumnStorage.ReadOnly = true;
-            // 
-            // ColumnDataType
-            // 
-            this.ColumnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnDataType.FillWeight = 6.335751F;
-            this.ColumnDataType.HeaderText = "数据类型";
-            this.ColumnDataType.Name = "ColumnDataType";
-            this.ColumnDataType.ReadOnly = true;
-            // 
-            // ColumnEncoding
-            // 
-            this.ColumnEncoding.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnEncoding.FillWeight = 6.335751F;
-            this.ColumnEncoding.HeaderText = "编码方式";
-            this.ColumnEncoding.Name = "ColumnEncoding";
-            this.ColumnEncoding.ReadOnly = true;
-            // 
-            // ColumnCompression
-            // 
-            this.ColumnCompression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnCompression.FillWeight = 6.335751F;
-            this.ColumnCompression.HeaderText = "压缩方式";
-            this.ColumnCompression.Name = "ColumnCompression";
-            this.ColumnCompression.ReadOnly = true;
-            // 
-            // ColumnTags
-            // 
-            this.ColumnTags.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnTags.FillWeight = 6.335751F;
-            this.ColumnTags.HeaderText = "标签";
-            this.ColumnTags.Name = "ColumnTags";
-            this.ColumnTags.ReadOnly = true;
-            // 
-            // ColumnDescription
-            // 
-            this.ColumnDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnDescription.FillWeight = 6.335751F;
-            this.ColumnDescription.HeaderText = "描述";
-            this.ColumnDescription.Name = "ColumnDescription";
-            this.ColumnDescription.ReadOnly = true;
-            // 
-            // labeltext
-            // 
-            this.labeltext.BackColor = System.Drawing.Color.SeaShell;
-            this.labeltext.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.labeltext.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labeltext.Location = new System.Drawing.Point(165, 4);
-            this.labeltext.Multiline = true;
-            this.labeltext.Name = "labeltext";
-            this.labeltext.Size = new System.Drawing.Size(807, 28);
-            this.labeltext.TabIndex = 1;
-            this.labeltext.Text = "欢迎使用IotDB功能块创建工具！";
-            this.labeltext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // menuStrip
             // 
             this.menuStrip.BackColor = System.Drawing.Color.Azure;
@@ -424,38 +426,12 @@ namespace IotDB_FunctionBlock_Creator
             // 
             this.toolStripMenuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiReadDatabase,
+            this.toolStripSeparator1,
             this.tsmiCSV,
             this.tsmiXML});
             this.toolStripMenuItemFile.Name = "toolStripMenuItemFile";
             this.toolStripMenuItemFile.Size = new System.Drawing.Size(58, 21);
             this.toolStripMenuItemFile.Text = "文件(&F)";
-            // 
-            // toolStripMenuItemEdit
-            // 
-            this.toolStripMenuItemEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiReadFB,
-            this.tsmiWriteFB,
-            this.tsmiSelectAll,
-            this.tsmiClear});
-            this.toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
-            this.toolStripMenuItemEdit.Size = new System.Drawing.Size(59, 21);
-            this.toolStripMenuItemEdit.Text = "编辑(&E)";
-            // 
-            // toolStripMenuItemTool
-            // 
-            this.toolStripMenuItemTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiSearch});
-            this.toolStripMenuItemTool.Name = "toolStripMenuItemTool";
-            this.toolStripMenuItemTool.Size = new System.Drawing.Size(59, 21);
-            this.toolStripMenuItemTool.Text = "工具(&T)";
-            // 
-            // toolStripMenuItemHelp
-            // 
-            this.toolStripMenuItemHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAbout});
-            this.toolStripMenuItemHelp.Name = "toolStripMenuItemHelp";
-            this.toolStripMenuItemHelp.Size = new System.Drawing.Size(61, 21);
-            this.toolStripMenuItemHelp.Text = "帮助(&H)";
             // 
             // tsmiReadDatabase
             // 
@@ -478,31 +454,31 @@ namespace IotDB_FunctionBlock_Creator
             this.tsmiXML.Text = "生成 xml文件(&X)";
             this.tsmiXML.Click += new System.EventHandler(this.buttonXML_Click);
             // 
-            // tsmiAbout
+            // toolStripMenuItemEdit
             // 
-            this.tsmiAbout.Name = "tsmiAbout";
-            this.tsmiAbout.Size = new System.Drawing.Size(180, 22);
-            this.tsmiAbout.Text = "关于(&A)...";
-            this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
+            this.toolStripMenuItemEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiReadFB,
+            this.tsmiWriteFB,
+            this.toolStripSeparator2,
+            this.tsmiSelectAll,
+            this.tsmiClear});
+            this.toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
+            this.toolStripMenuItemEdit.Size = new System.Drawing.Size(59, 21);
+            this.toolStripMenuItemEdit.Text = "编辑(&E)";
             // 
-            // tsmiSearch
+            // tsmiReadFB
             // 
-            this.tsmiSearch.Name = "tsmiSearch";
-            this.tsmiSearch.Size = new System.Drawing.Size(180, 22);
-            this.tsmiSearch.Text = "搜索 时间序列(&C)";
-            this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
+            this.tsmiReadFB.Name = "tsmiReadFB";
+            this.tsmiReadFB.Size = new System.Drawing.Size(184, 22);
+            this.tsmiReadFB.Text = "创建 读取功能块(&R)";
+            this.tsmiReadFB.Click += new System.EventHandler(this.buttonAddFB_Click);
             // 
-            // buttonAddWFB
+            // tsmiWriteFB
             // 
-            this.buttonAddWFB.BackColor = System.Drawing.Color.GhostWhite;
-            this.buttonAddWFB.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonAddWFB.Location = new System.Drawing.Point(1148, 443);
-            this.buttonAddWFB.Name = "buttonAddWFB";
-            this.buttonAddWFB.Size = new System.Drawing.Size(145, 30);
-            this.buttonAddWFB.TabIndex = 4;
-            this.buttonAddWFB.Text = "添加写入功能块";
-            this.buttonAddWFB.UseVisualStyleBackColor = false;
-            this.buttonAddWFB.Click += new System.EventHandler(this.buttonAddWFB_Click);
+            this.tsmiWriteFB.Name = "tsmiWriteFB";
+            this.tsmiWriteFB.Size = new System.Drawing.Size(184, 22);
+            this.tsmiWriteFB.Text = "创建 写入功能块(&W)";
+            this.tsmiWriteFB.Click += new System.EventHandler(this.buttonAddWFB_Click);
             // 
             // tsmiSelectAll
             // 
@@ -518,19 +494,57 @@ namespace IotDB_FunctionBlock_Creator
             this.tsmiClear.Text = "清除 选择(&C)";
             this.tsmiClear.Click += new System.EventHandler(this.buttonclearselect_Click);
             // 
-            // tsmiReadFB
+            // toolStripMenuItemTool
             // 
-            this.tsmiReadFB.Name = "tsmiReadFB";
-            this.tsmiReadFB.Size = new System.Drawing.Size(184, 22);
-            this.tsmiReadFB.Text = "创建 读取功能块(&R)";
-            this.tsmiReadFB.Click += new System.EventHandler(this.buttonAddFB_Click);
+            this.toolStripMenuItemTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiSearch});
+            this.toolStripMenuItemTool.Name = "toolStripMenuItemTool";
+            this.toolStripMenuItemTool.Size = new System.Drawing.Size(59, 21);
+            this.toolStripMenuItemTool.Text = "工具(&T)";
             // 
-            // tsmiWriteFB
+            // tsmiSearch
             // 
-            this.tsmiWriteFB.Name = "tsmiWriteFB";
-            this.tsmiWriteFB.Size = new System.Drawing.Size(184, 22);
-            this.tsmiWriteFB.Text = "创建 写入功能块(&W)";
-            this.tsmiWriteFB.Click += new System.EventHandler(this.buttonAddWFB_Click);
+            this.tsmiSearch.Name = "tsmiSearch";
+            this.tsmiSearch.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSearch.Text = "搜索 时间序列(&C)";
+            this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
+            // 
+            // toolStripMenuItemHelp
+            // 
+            this.toolStripMenuItemHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAbout});
+            this.toolStripMenuItemHelp.Name = "toolStripMenuItemHelp";
+            this.toolStripMenuItemHelp.Size = new System.Drawing.Size(61, 21);
+            this.toolStripMenuItemHelp.Text = "帮助(&H)";
+            // 
+            // tsmiAbout
+            // 
+            this.tsmiAbout.Name = "tsmiAbout";
+            this.tsmiAbout.Size = new System.Drawing.Size(180, 22);
+            this.tsmiAbout.Text = "关于(&A)...";
+            this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
+            // 
+            // buttonAddWFB
+            // 
+            this.buttonAddWFB.BackColor = System.Drawing.Color.GhostWhite;
+            this.buttonAddWFB.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonAddWFB.Location = new System.Drawing.Point(1148, 443);
+            this.buttonAddWFB.Name = "buttonAddWFB";
+            this.buttonAddWFB.Size = new System.Drawing.Size(145, 30);
+            this.buttonAddWFB.TabIndex = 4;
+            this.buttonAddWFB.Text = "添加写入功能块";
+            this.buttonAddWFB.UseVisualStyleBackColor = false;
+            this.buttonAddWFB.Click += new System.EventHandler(this.buttonAddWFB_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(186, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(181, 6);
             // 
             // MainForm
             // 
@@ -615,6 +629,8 @@ namespace IotDB_FunctionBlock_Creator
         private System.Windows.Forms.ToolStripMenuItem tsmiClear;
         private System.Windows.Forms.ToolStripMenuItem tsmiReadFB;
         private System.Windows.Forms.ToolStripMenuItem tsmiWriteFB;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
 
